@@ -8,19 +8,19 @@ all: clear
 	@java -cp $(DST) $(DIR)/$(TARGET) -r 6 -A 1 test/test2 --exclude=^*
 
 jar: clear
-	@javac -d $(DST) -cp $(SRC) $(SRC)/$(DIR)/$(TARGET).java && cd $(DST) && jar -cfe ../term/usr/bin/grek.jar $(DIR)/$(TARGET) $(DIR)/*.class
+	@javac -d $(DST) -cp $(SRC) $(SRC)/$(DIR)/$(TARGET).java && cd $(DST) && jar -cfe grek.jar $(DIR)/$(TARGET) $(DIR)/*.class
 
 clear:
 	@rm -rf $(DST)/*
 	@rm -rf term/usr/bin/grek.jar
 
-deb: clearDeb all
+deb: clearDeb
 	@cd term && tar czf data.tar.gz usr && tar czf control.tar.gz control && ar -r grek.deb debian-binary control.tar.gz data.tar.gz
 
 clearDeb:
-	@cd term &&  && rm -rf data.tar.gz control.tar.gz grek.deb
+	@cd term && rm -rf data.tar.gz control.tar.gz grek.deb
 
-install: remove deb
+install: deb
 	@cd term && sudo dpkg -i grek.deb
 
 remove:
